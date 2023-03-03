@@ -1,6 +1,5 @@
 from click_shell import shell
 import click
-import click_completion
 import os
 import webbrowser
 import paramiko
