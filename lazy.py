@@ -1,7 +1,9 @@
 from click_shell import shell
 import click
+import click_completion
 import os
 import webbrowser
+# import signal
 import paramiko
 
 g = "\033[32m[+]\033[0m"
@@ -11,11 +13,13 @@ b = '\033[94m[-->]\033[0m'
 y = '\033[93m[!]\033[0m'
 rc = '\033[0m'
 
-@shell(prompt='>>> ', intro='Type "help" for options')
+click_completion.init()
+
+@shell(prompt='[Daily-Helper]>>> ', intro='Type "help" for options')
+
 def main():
     pass
-
-
+    
 @main.command()
 @click.option('--host', prompt='Enter the hostname or IP address of the remote machine', help='Hostname or IP address of the remote machine')
 @click.option('--username', prompt='Enter your username on the remote machine', help='Your username on the remote machine')
@@ -57,12 +61,21 @@ def project_setup(project_name, project_dir):
     os.makedirs(os.path.join(project_directory, 'Scans'))
     os.makedirs(os.path.join(project_directory, 'Report'))
     os.makedirs(os.path.join(project_directory, 'Screenshots'))
-    file_path = os.path.join(project_directory, 'nmap.txt')
+    file_path = os.path.join(project_directory, 'exec_summary.txt')
     with open(file_path, 'w') as f:
-        f.write('nmap -n ')
+        f.write('exec summary')
     click.echo('Directories created successfully!')
 
 
+@main.command()
+@click.option('--evidence', default='C:\\Users\\bsi553\\Documents\\Pentests\\core-helper\\evidence', help='Main directory path')
+@click.option('--client', prompt='Enter client name', help='Name of the project', required=True, type=click.Path())
+def move_evidence(evidence, client):
+    new_file_path = os.path.join('C:\\Users\\bsi553\\Documents\\Pentests', client, "evidence")
+    os.rename(evidence, new_file_path)
+    click.echo(f"Moved {evidence} to {new_file_path}")
+    
+    
 links = [
     'https://www.google.com',
     'https://www.github.com',
