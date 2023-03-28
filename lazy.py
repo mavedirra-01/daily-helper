@@ -29,7 +29,7 @@ def main():
 def alive_hosts(host, username, password, output, targetfile):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    drone = host + '.kevlar.bulletproofsi.net'
+    drone = host
     try:
         ssh.connect(hostname=drone, username=username, password=password)
     except Exception as e:
@@ -64,6 +64,7 @@ def project_setup(project_name, project_dir):
     file_path = os.path.join(project_directory, 'exec_summary.txt')
     with open(file_path, 'w') as f:
         f.write('exec summary')
+    os.listdir(project_directory)
     click.echo('Directories created successfully!')
 
 
