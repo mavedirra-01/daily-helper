@@ -54,7 +54,7 @@ def alive_hosts(host, username, password, output, targetfile):
 
 @main.command()
 @click.option('--project-name', prompt='Enter client name', help='Name of the project')
-@click.option('--project-dir', default='C:\\Users\\bsi553\\Documents\\Pentests', help='Main directory path')
+@click.option('--project-dir', default='C:\\Users\\wanda\\Documents\\Pentests', help='Main directory path')
 def project_setup(project_name, project_dir):
     project_directory = os.path.join(project_dir, project_name)
     os.makedirs(os.path.join(project_directory, 'Docs'))
@@ -72,34 +72,10 @@ def project_setup(project_name, project_dir):
 @click.option('--evidence', default='C:\\Users\\bsi553\\Documents\\Pentests\\core-helper\\evidence', help='Main directory path')
 @click.option('--client', prompt='Enter client name', help='Name of the project', required=True, type=click.Path())
 def move_evidence(evidence, client):
-    new_file_path = os.path.join('C:\\Users\\bsi553\\Documents\\Pentests', client, "evidence")
+    new_file_path = os.path.join('C:\\Users\\wanda\\Documents\\Pentests', client, "evidence")
     os.rename(evidence, new_file_path)
     click.echo(f"Moved {evidence} to {new_file_path}")
     
-    
-links = [
-    'https://www.google.com',
-    'https://www.github.com',
-    'https://www.linkedin.com'
-]
-
-@main.command()
-def open_link():
-    click.echo('Available links:')
-    for i, link in enumerate(links):
-        click.echo(f'{i+1}. {link}')
-
-    while True:
-        selection = click.prompt('Select a link to open (0 to quit)', type=int, default=1, show_default=True, prompt_suffix=': ')
-        if selection == 0:
-            return
-        elif selection < 1 or selection > len(links):
-            click.echo('Invalid selection')
-        else:
-            link = links[selection-1]
-            webbrowser.open_new_tab(link)
-            click.echo(f'Opened {link} in Firefox')
-            return
 
 @main.command()
 @click.option('-c', '--client', required=True)
@@ -108,7 +84,7 @@ def open_link():
 @click.option('-d', '--file-path', required=True)
 def nessus2plextrac(client, scope, report_id, file_path):
     script = r"C:\Users\bsi553\Desktop\reporting-toolset\Nessus2Plextrac.py"
-    username = "-u mavedirra"
+    username = "-u "
     password = "-p FIXME"
     exec(open(script).read(), {'-c', client, '-s', scope, '-r', report_id, '-d', file_path, username, password})
 
