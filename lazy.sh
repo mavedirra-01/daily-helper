@@ -5,10 +5,13 @@ function alive_hosts () {
     read -p "Enter your username on the remote machine: " username
     read -s -p "Enter your password on the remote machine: " password
     echo
-    read -p "Enter the path of the output file: " output
-    read -p "Enter the path of the target file (default is up.txt): " targetfile
-    targetfile=${targetfile:-up.txt}
-    sshpass -p $password ssh $username@$host "nmap -n -sn -iL $targetfile --excludefile -oG - | awk '/Up\$/{{print \$2}}'" > $output
+    read -p "Enter the path of the output file (default is PWD/up.txt): " output
+    read -p "Enter the path of the target file (default is targets.txt): " targetfile
+    read -p "Enter the path of the exclude file (default is exclude.txt): " excludefile
+    targetfile=${targetfile:-targets.txt}
+    output=(${output:-up.txt})
+    output=(${excludefile:-exclude.txt})
+    sshpass -p $password ssh $username@$host "nmap -n -sn -iL $targetfile --excludefile $excludefile -oG - | awk '/Up\$/{print \$2}'" > $output
     echo "Output saved to $output"
     sshpass -p $password ssh $username@$host "sudo systemctl start nessusd"
 }
