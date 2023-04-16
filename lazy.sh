@@ -10,11 +10,20 @@ function alive_hosts () {
     read -p "Enter the path of the exclude file (default is exclude.txt): " excludefile
     targetfile=${targetfile:-targets.txt}
     output=${output:-up.txt}
-    output=${excludefile:-exclude.txt}
+    excludefile=${excludefile:-exclude.txt}
+
+    # Copy the target and exclude files to the remote machine
+    sshpass -p $password scp $targetfile $username@$host:
+    sshpass -p $password scp $excludefile $username@$host:
+
+    # Run nmap command on the remote machine and save output to local file
     sshpass -p $password ssh $username@$host "nmap -n -sn -iL $targetfile --excludefile $excludefile -oG - | awk '/Up\$/{print \$2}'" > $output
     echo "Output saved to $output"
-    #sshpass -p $password ssh $username@$host "sudo systemctl start nessusd"
+
+    # Remove target and exclude files from remote machine
+    sshpass -p $password ssh $username@$host "rm $targetfile $excludefile"
 }
+
 
 function project_setup () {
     read -p "Enter client name: " project_name
