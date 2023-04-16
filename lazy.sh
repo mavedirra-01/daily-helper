@@ -9,11 +9,11 @@ function alive_hosts () {
     read -p "Enter the path of the target file (default is targets.txt): " targetfile
     read -p "Enter the path of the exclude file (default is exclude.txt): " excludefile
     targetfile=${targetfile:-targets.txt}
-    output=(${output:-up.txt})
-    output=(${excludefile:-exclude.txt})
+    output=${output:-up.txt}
+    output=${excludefile:-exclude.txt}
     sshpass -p $password ssh $username@$host "nmap -n -sn -iL $targetfile --excludefile $excludefile -oG - | awk '/Up\$/{print \$2}'" > $output
     echo "Output saved to $output"
-    sshpass -p $password ssh $username@$host "sudo systemctl start nessusd"
+    #sshpass -p $password ssh $username@$host "sudo systemctl start nessusd"
 }
 
 function project_setup () {
